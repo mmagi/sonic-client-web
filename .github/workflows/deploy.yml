@@ -34,8 +34,8 @@ jobs:
       - run: npm cache clear --force && npm install
       - run: npm run build
       - name: login docker hub
-        run: echo "${{ secrets.ACCESS_TOKEN }}" | docker login -u zhouyixun --password-stdin
+        run: docker login -u ${{vars.DOCKER_USERNAME}} -p ${{secrets.ACCESS_TOKEN}} ${{vars.DOCKER_SERVER}}
       - name: build docker image
-        run: docker build -t sonicorg/sonic-client-web:${{ steps.previoustag.outputs.tag }} .
+        run: docker build -t ${{vars.DOCKER_IMAGE_PATH}}/sonic-client-web:${{ steps.previoustag.outputs.tag }} .
       - name: push docker image
-        run: docker push sonicorg/sonic-client-web:${{ steps.previoustag.outputs.tag }}
+        run: docker push ${{vars.DOCKER_IMAGE_PATH}}/sonic-client-web:${{ steps.previoustag.outputs.tag }}
